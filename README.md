@@ -6,7 +6,7 @@
 
 The SteenCorp Network Segmentation Lab is a Cisco Packet Tracer project designed to demonstrate basic business network segmentation.
 
-This lab shows how a company can separate trusted corporate devices, internal servers, and guest devices using VLANs, inter-VLAN routing, trunking, router-on-a-stick, and access control rules.
+This lab shows how a business can separate trusted corporate devices, internal servers, and guest devices using VLANs, trunking, router-on-a-stick, inter-VLAN routing, and access control rules.
 
 The main goal of this project is to prove that guest devices can be isolated from internal company resources while still being allowed to reach a simulated internet/test network.
 
@@ -69,16 +69,11 @@ This creates a simple but realistic network security scenario.
 
 ---
 
-## Topology
+# Implementation Walkthrough
 
-The lab uses a simple Packet Tracer topology:
+## Step 1 — Build the Packet Tracer Topology
 
-- 1 router
-- 1 switch
-- 1 corporate workstation
-- 1 guest workstation
-- 1 internal server
-- 1 simulated internet/test server
+The lab was built with one router, one switch, one corporate workstation, one guest client, one internal server, and one simulated internet/test server.
 
 ```text
                   ISP-TEST-SRV01
@@ -91,29 +86,43 @@ The lab uses a simple Packet Tracer topology:
     VLAN 10           VLAN 20             VLAN 30
 ```
 
-![Packet Tracer Topology](./Evidence/01_Packet_Tracer_Topology.png)
+The topology note identifies the purpose of each VLAN and the overall goal of the lab.
+
+<img src="./Evidence/01_Packet_Tracer_Topology.png" alt="Packet Tracer Topology" width="850">
 
 ---
 
-## Access Control Goals
+## Step 2 — Configure Endpoint IP Addresses
 
-| Source | Destination | Expected Result |
-|---|---|---|
-| Corporate PC | Internal Server | Allowed |
-| Corporate PC | Internet/Test Server | Allowed |
-| Guest PC | Internal Server | Blocked after ACL |
-| Guest PC | Corporate LAN | Blocked after ACL |
-| Guest PC | Internet/Test Server | Allowed |
+Each endpoint was manually assigned an IP address, subnet mask, and default gateway based on its VLAN.
 
-The main security goal is to keep the guest network isolated from internal SteenCorp resources while still allowing guest access to the simulated outside network.
+### Corporate Workstation
+
+| Setting | Value |
+|---|---|
+| Device | `SC-CORP-WK01` |
+| IP Address | `192.168.10.101` |
+| Subnet Mask | `255.255.255.0` |
+| Default Gateway | `192.168.10.1` |
+
+<img src="./Evidence/04_Corporate_PC_IP_Config.png" alt="Corporate PC IP Configuration" width="850">
+
+### Guest Workstation
+
+| Setting | Value |
+|---|---|
+| Device | `SC-GUEST-CLIENT01` |
+| IP Address | `192.168.20.101` |
+| Subnet Mask | `255.255.255.0` |
+| Default Gateway | `192.168.20.1` |
+
+<img src="./Evidence/05_Guest_PC_IP_Config.png" alt="Guest PC IP Configuration" width="850">
 
 ---
 
-## Implementation Summary
+## Step 3 — Configure VLANs on the Access Switch
 
-### VLAN Segmentation
-
-Separate VLANs were created to divide the network by device type and trust level.
+The access switch was configured with three VLANs to separate devices by trust level and function.
 
 | VLAN | Name | Purpose |
 |---|---|---|
@@ -121,7 +130,7 @@ Separate VLANs were created to divide the network by device type and trust level
 | VLAN 20 | `SteenCorp_Guest` | Guest/untrusted device network |
 | VLAN 30 | `SteenCorp_Servers` | Internal company server network |
 
-The switch ports were assigned based on the connected device:
+The switch ports were assigned based on the connected device.
 
 | Switch Port | Connected Device | VLAN |
 |---|---|---|
@@ -132,9 +141,11 @@ The switch ports were assigned based on the connected device:
 
 This prevents all devices from existing on one flat network.
 
+<img src="./Evidence/02_VLAN_Configuration.png" alt="VLAN Configuration" width="850">
+
 ---
 
-### Trunk Link Configuration
+## Step 4 — Configure the Trunk Link
 
 The switch port connected to the router was configured as a trunk link.
 
@@ -148,15 +159,17 @@ VLAN 20
 VLAN 30
 ```
 
-This allows the router to receive traffic from multiple VLANs over one physical interface.
+This is required because the router needs to receive traffic from multiple VLANs over one physical interface.
+
+<img src="./Evidence/02A_Trunk_Link_Configuration.png" alt="Trunk Link Configuration" width="850">
 
 ---
 
-### Inter-VLAN Routing
+## Step 5 — Configure Router-on-a-Stick
 
 Router-on-a-stick was used to allow controlled routing between VLANs.
 
-A single physical router interface was connected to the access switch as a trunk, and separate router subinterfaces were created for each VLAN.
+A single physical router interface was connected to the access switch as a trunk. Separate router subinterfaces were then created for each VLAN.
 
 Each subinterface was assigned an 802.1Q VLAN tag and an IP address to act as the default gateway for that VLAN.
 
@@ -169,9 +182,28 @@ Each subinterface was assigned an 802.1Q VLAN tag and an IP address to act as th
 
 This allowed routing between the Corporate, Guest, Server, and simulated Internet/Test networks before access control rules were applied.
 
+<img src="./Evidence/03_Router_Subinterfaces.png" alt="Router Subinterfaces" width="850">
+
 ---
 
-### Guest Network Isolation
+## Step 6 — Validate Routing Before Applying the ACL
+
+Before applying any access control rules, I tested routing to confirm that the network was functioning correctly.
+
+The Guest workstation was able to reach the internal server before the ACL was applied.
+
+This matters because it proves that routing was working first, and that the ACL was responsible for blocking guest access later.
+
+| Test | Result |
+|---|---|
+| Guest PC → Internal Server before ACL | Allowed |
+| Guest PC → Simulated Internet/Test Server before ACL | Allowed |
+
+<img src="./Evidence/06A_Pre_ACL_Guest_Can_Reach_Internal_Server.png" alt="Pre-ACL Guest Can Reach Internal Server" width="850">
+
+---
+
+## Step 7 — Apply Guest Isolation ACL
 
 An extended access control list was applied to prevent guest devices from accessing internal SteenCorp resources.
 
@@ -190,9 +222,52 @@ G0/0.20
 
 This means traffic entering the router from the Guest VLAN is checked before being routed elsewhere.
 
+<img src="./Evidence/09_ACL_Configuration.png" alt="Guest Isolation ACL Configuration" width="850">
+
 ---
 
-## Validation Results
+## Step 8 — Validate Segmentation After Applying the ACL
+
+After the ACL was applied, I tested connectivity again to confirm that the segmentation worked as intended.
+
+### Corporate PC to Internal Server
+
+Corporate devices were still allowed to reach internal SteenCorp resources.
+
+| Test | Result |
+|---|---|
+| Corporate PC → Internal Server | Allowed |
+| Corporate PC → Simulated Internet/Test Server | Allowed |
+
+<img src="./Evidence/06_Corporate_To_Internal_Server_Allowed.png" alt="Corporate PC to Internal Server Allowed" width="850">
+
+---
+
+### Guest PC to Internal Server
+
+Guest devices were blocked from reaching internal SteenCorp resources.
+
+| Test | Result |
+|---|---|
+| Guest PC → Internal Server | Blocked |
+
+<img src="./Evidence/07_Guest_To_Internal_Server_Blocked.png" alt="Guest PC to Internal Server Blocked" width="850">
+
+---
+
+### Guest PC to Simulated Internet/Test Server
+
+The Guest network was still allowed to reach the simulated outside/test network.
+
+| Test | Result |
+|---|---|
+| Guest PC → Simulated Internet/Test Server | Allowed |
+
+<img src="./Evidence/08_Guest_To_Internet_Test_Server_Allowed.png" alt="Guest PC to Internet Test Server Allowed" width="850">
+
+---
+
+# Final Validation Results
 
 | Test | Result |
 |---|---|
@@ -208,25 +283,7 @@ The post-ACL test showed that the guest network was successfully blocked from in
 
 ---
 
-## Screenshot Evidence
-
-| Evidence | Description |
-|---|---|
-| `01_Packet_Tracer_Topology.png` | Final Packet Tracer topology with SteenCorp VLAN design note |
-| `02_VLAN_Configuration.png` | VLANs created on the access switch and assigned to device ports |
-| `02A_Trunk_Link_Configuration.png` | Trunk link configuration showing VLANs allowed across the router/switch link |
-| `03_Router_Subinterfaces.png` | Router-on-a-stick subinterfaces configured as VLAN gateways |
-| `04_Corporate_PC_IP_Config.png` | Corporate workstation IP configuration |
-| `05_Guest_PC_IP_Config.png` | Guest workstation IP configuration |
-| `06A_Pre_ACL_Guest_Can_Reach_Internal_Server.png` | Pre-ACL validation showing Guest could reach the internal server before restrictions |
-| `06_Corporate_To_Internal_Server_Allowed.png` | Corporate workstation successfully reaching the internal server |
-| `07_Guest_To_Internal_Server_Blocked.png` | Guest workstation blocked from reaching the internal server after ACL |
-| `08_Guest_To_Internet_Test_Server_Allowed.png` | Guest workstation still allowed to reach the simulated internet/test server |
-| `09_ACL_Configuration.png` | Guest isolation ACL configuration on the router |
-
----
-
-## Packet Tracer File
+# Packet Tracer File
 
 The completed Cisco Packet Tracer lab file is included here:
 
@@ -236,7 +293,7 @@ PacketTracer/SteenCorp_Network_Segmentation_Lab.pkz
 
 ---
 
-## Project Structure
+# Project Structure
 
 <pre>
 SteenCorp-Network-Segmentation-Lab/
@@ -263,7 +320,7 @@ SteenCorp-Network-Segmentation-Lab/
 
 ---
 
-## Skills Demonstrated
+# Skills Demonstrated
 
 - Cisco Packet Tracer network design
 - VLAN segmentation
@@ -282,13 +339,13 @@ SteenCorp-Network-Segmentation-Lab/
 
 ---
 
-## What I Learned
+# What I Learned
 
 - Flat networks are easier to build but harder to secure
 - VLANs help separate devices by role, department, or trust level
-- Guest networks should not have access to internal company resources
 - Trunk links allow multiple VLANs to travel between network devices
 - Router-on-a-stick allows one router interface to route between multiple VLANs
+- Guest networks should not have access to internal company resources
 - ACLs can be used to enforce basic traffic restrictions
 - Routing should be tested before applying access control rules
 - Pre-change and post-change validation makes troubleshooting easier
@@ -296,7 +353,7 @@ SteenCorp-Network-Segmentation-Lab/
 
 ---
 
-## Future Improvements
+# Future Improvements
 
 Future versions of this lab could include:
 
@@ -313,7 +370,7 @@ Voice VLANs were intentionally left out of the initial version to keep this proj
 
 ---
 
-## Final Outcome
+# Final Outcome
 
 This lab successfully demonstrates a basic segmented business network.
 
