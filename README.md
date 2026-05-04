@@ -1,6 +1,7 @@
 # SteenCorp Network Segmentation Lab
 
 ![SteenCorp Network Segmentation Lab](./SteenCorp_Network_Segmentation_Banner.jpg)
+
 ## Overview
 
 The SteenCorp Network Segmentation Lab is a Cisco Packet Tracer project designed to demonstrate basic business network segmentation.
@@ -68,7 +69,7 @@ This creates a simple but realistic network security scenario.
 
 ---
 
-# Implementation Walkthrough
+## Implementation Walkthrough
 
 ## Step 1 — Build the Packet Tracer Topology
 
@@ -266,7 +267,7 @@ The Guest network was still allowed to reach the simulated outside/test network.
 
 ---
 
-# Final Validation Results
+## Final Validation Results
 
 | Test | Result |
 |---|---|
@@ -282,14 +283,33 @@ The post-ACL test showed that the guest network was successfully blocked from in
 
 ---
 
-# Packet Tracer File
+## Screenshot Evidence
+
+| Evidence | Description |
+|---|---|
+| `01_Packet_Tracer_Topology.png` | Final Packet Tracer topology with SteenCorp VLAN design note |
+| `02_VLAN_Configuration.png` | VLANs created on the access switch and assigned to device ports |
+| `02A_Trunk_Link_Configuration.png` | Trunk link configuration showing VLANs allowed across the router/switch link |
+| `03_Router_Subinterfaces.png` | Router-on-a-stick subinterfaces configured as VLAN gateways |
+| `04_Corporate_PC_IP_Config.png` | Corporate workstation IP configuration |
+| `05_Guest_PC_IP_Config.png` | Guest workstation IP configuration |
+| `06A_Pre_ACL_Guest_Can_Reach_Internal_Server.png` | Pre-ACL validation showing Guest could reach the internal server before restrictions |
+| `06_Corporate_To_Internal_Server_Allowed.png` | Corporate workstation successfully reaching the internal server |
+| `07_Guest_To_Internal_Server_Blocked.png` | Guest workstation blocked from reaching the internal server after ACL |
+| `08_Guest_To_Internet_Test_Server_Allowed.png` | Guest workstation still allowed to reach the simulated internet/test server |
+| `09_ACL_Configuration.png` | Guest isolation ACL configuration on the router |
+
+---
+
+## Packet Tracer File
 
 The completed Cisco Packet Tracer lab file is included here:
 
-```text
-PacketTracer/SteenCorp_Network_Segmentation_Lab.pkz
-```
-# Configuration Reference
+[`SteenCorp_Network_Segmentation_Lab.pkz`](./PacketTracer/SteenCorp_Network_Segmentation_Lab.pkz)
+
+---
+
+## Configuration Reference
 
 The Cisco CLI commands used to build this lab are included in the `Configurations` folder.
 
@@ -302,16 +322,20 @@ These files document the final intended configuration used in the lab.
 
 ---
 
-# Project Structure
+## Project Structure
 
 <pre>
-SteenCorp-Network-Segmentation-Lab/
+SteenCorp_Network_Segmentation_Lab/
 │
 ├── README.md
 ├── SteenCorp_Network_Segmentation_Banner.jpg
 │
 ├── PacketTracer/
 │   └── SteenCorp_Network_Segmentation_Lab.pkz
+│
+├── Configurations/
+│   ├── 01_Switch_VLAN_Trunk_Config.md
+│   └── 02_Router_Subinterfaces_ACL_Config.md
 │
 └── Evidence/
     ├── 01_Packet_Tracer_Topology.png
@@ -329,7 +353,7 @@ SteenCorp-Network-Segmentation-Lab/
 
 ---
 
-# Skills Demonstrated
+## Skills Demonstrated
 
 - Cisco Packet Tracer network design
 - VLAN segmentation
@@ -348,7 +372,7 @@ SteenCorp-Network-Segmentation-Lab/
 
 ---
 
-# What I Learned
+## What I Learned
 
 - Flat networks are easier to build but harder to secure
 - VLANs help separate devices by role, department, or trust level
@@ -362,7 +386,7 @@ SteenCorp-Network-Segmentation-Lab/
 
 ---
 
-# Future Improvements
+## Future Improvements
 
 Future versions of this lab could include:
 
@@ -379,7 +403,7 @@ Voice VLANs were intentionally left out of the initial version to keep this proj
 
 ---
 
-# Final Outcome
+## Final Outcome
 
 This lab successfully demonstrates a basic segmented business network.
 
