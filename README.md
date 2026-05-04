@@ -1,6 +1,6 @@
 # SteenCorp Network Segmentation Lab
 
-![SteenCorp Network Segmentation Lab](./SteenCorp_Network_Segmentation_Banner.jpg)
+![SteenCorp Network Segmentation Lab](./SteenCorp_Network_Segmentation_Banner.png)
 
 ## Overview
 
