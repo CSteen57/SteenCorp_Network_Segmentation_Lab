@@ -71,7 +71,7 @@ This creates a simple but realistic network security scenario.
 
 ## Implementation Walkthrough
 
-## Step 1 — Build the Packet Tracer Topology
+### Step 1 — Build the Packet Tracer Topology
 
 The lab was built with one router, one switch, one corporate workstation, one guest client, one internal server, and one simulated internet/test server.
 
@@ -92,11 +92,11 @@ The topology note identifies the purpose of each VLAN and the overall goal of th
 
 ---
 
-## Step 2 — Configure Endpoint IP Addresses
+### Step 2 — Configure Endpoint IP Addresses
 
 Each endpoint was manually assigned an IP address, subnet mask, and default gateway based on its VLAN.
 
-### Corporate Workstation
+#### Corporate Workstation
 
 | Setting | Value |
 |---|---|
@@ -107,7 +107,7 @@ Each endpoint was manually assigned an IP address, subnet mask, and default gate
 
 <img src="./Evidence/04_Corporate_PC_IP_Config.png" alt="Corporate PC IP Configuration" width="850">
 
-### Guest Workstation
+#### Guest Workstation
 
 | Setting | Value |
 |---|---|
@@ -120,7 +120,7 @@ Each endpoint was manually assigned an IP address, subnet mask, and default gate
 
 ---
 
-## Step 3 — Configure VLANs on the Access Switch
+### Step 3 — Configure VLANs on the Access Switch
 
 The access switch was configured with three VLANs to separate devices by trust level and function.
 
@@ -145,7 +145,7 @@ This prevents all devices from existing on one flat network.
 
 ---
 
-## Step 4 — Configure the Trunk Link
+### Step 4 — Configure the Trunk Link
 
 The switch port connected to the router was configured as a trunk link.
 
@@ -165,7 +165,7 @@ This is required because the router needs to receive traffic from multiple VLANs
 
 ---
 
-## Step 5 — Configure Router-on-a-Stick
+### Step 5 — Configure Router-on-a-Stick
 
 Router-on-a-stick was used to allow controlled routing between VLANs.
 
@@ -186,7 +186,7 @@ This allowed routing between the Corporate, Guest, Server, and simulated Interne
 
 ---
 
-## Step 6 — Validate Routing Before Applying the ACL
+### Step 6 — Validate Routing Before Applying the ACL
 
 Before applying any access control rules, I tested routing to confirm that the network was functioning correctly.
 
@@ -203,7 +203,7 @@ This matters because it proves that routing was working first, and that the ACL 
 
 ---
 
-## Step 7 — Apply Guest Isolation ACL
+### Step 7 — Apply Guest Isolation ACL
 
 An extended access control list was applied to prevent guest devices from accessing internal SteenCorp resources.
 
@@ -226,11 +226,11 @@ This means traffic entering the router from the Guest VLAN is checked before bei
 
 ---
 
-## Step 8 — Validate Segmentation After Applying the ACL
+### Step 8 — Validate Segmentation After Applying the ACL
 
 After the ACL was applied, I tested connectivity again to confirm that the segmentation worked as intended.
 
-### Corporate PC to Internal Server
+#### Corporate PC to Internal Server
 
 Corporate devices were still allowed to reach internal SteenCorp resources.
 
@@ -241,9 +241,7 @@ Corporate devices were still allowed to reach internal SteenCorp resources.
 
 <img src="./Evidence/06_Corporate_To_Internal_Server_Allowed.png" alt="Corporate PC to Internal Server Allowed" width="850">
 
----
-
-### Guest PC to Internal Server
+#### Guest PC to Internal Server
 
 Guest devices were blocked from reaching internal SteenCorp resources.
 
@@ -253,9 +251,7 @@ Guest devices were blocked from reaching internal SteenCorp resources.
 
 <img src="./Evidence/07_Guest_To_Internal_Server_Blocked.png" alt="Guest PC to Internal Server Blocked" width="850">
 
----
-
-### Guest PC to Simulated Internet/Test Server
+#### Guest PC to Simulated Internet/Test Server
 
 The Guest network was still allowed to reach the simulated outside/test network.
 
