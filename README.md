@@ -1,7 +1,6 @@
 # SteenCorp Network Segmentation Lab
 
-![SteenCorp Network Segmentation Lab](./SteenCorp_Network_Segmentation_Banner.png)
-
+![SteenCorp Network Segmentation Lab](./SteenCorp_Network_Segmentation_Banner.jpg)
 ## Overview
 
 The SteenCorp Network Segmentation Lab is a Cisco Packet Tracer project designed to demonstrate basic business network segmentation.
