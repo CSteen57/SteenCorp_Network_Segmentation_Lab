@@ -289,6 +289,16 @@ The completed Cisco Packet Tracer lab file is included here:
 ```text
 PacketTracer/SteenCorp_Network_Segmentation_Lab.pkz
 ```
+# Configuration Reference
+
+The Cisco CLI commands used to build this lab are included in the `Configurations` folder.
+
+| File | Purpose |
+|---|---|
+| [`01_Switch_VLAN_Trunk_Config.md`](./Configurations/01_Switch_VLAN_Trunk_Config.md) | Switch VLAN creation, access port assignments, and trunk configuration |
+| [`02_Router_Subinterfaces_ACL_Config.md`](./Configurations/02_Router_Subinterfaces_ACL_Config.md) | Router-on-a-stick subinterfaces, VLAN gateways, and guest isolation ACL |
+
+These files document the final intended configuration used in the lab.
 
 ---
 
