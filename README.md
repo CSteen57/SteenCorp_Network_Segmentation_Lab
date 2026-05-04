@@ -6,7 +6,7 @@
 
 The SteenCorp Network Segmentation Lab is a Cisco Packet Tracer project designed to demonstrate basic business network segmentation.
 
-This lab shows how a company can separate trusted corporate devices, internal servers, and guest devices using VLANs, inter-VLAN routing, and access control rules.
+This lab shows how a company can separate trusted corporate devices, internal servers, and guest devices using VLANs, inter-VLAN routing, trunking, router-on-a-stick, and access control rules.
 
 The main goal of this project is to prove that guest devices can be isolated from internal company resources while still being allowed to reach a simulated internet/test network.
 
@@ -24,7 +24,7 @@ In the original SteenCorp lab, I configured and validated the internal domain ne
 - Windows Server and Windows 11 domain connectivity
 - VMware network isolation
 
-This project expands that idea into a segmented network design.
+This Packet Tracer project expands that idea into a segmented network design.
 
 Instead of placing every device on one flat network, this lab separates devices by purpose and trust level.
 
@@ -134,6 +134,24 @@ This prevents all devices from existing on one flat network.
 
 ---
 
+### Trunk Link Configuration
+
+The switch port connected to the router was configured as a trunk link.
+
+The trunk allows multiple VLANs to travel across the same physical connection between the switch and router.
+
+Allowed VLANs on the trunk:
+
+```text
+VLAN 10
+VLAN 20
+VLAN 30
+```
+
+This allows the router to receive traffic from multiple VLANs over one physical interface.
+
+---
+
 ### Inter-VLAN Routing
 
 Router-on-a-stick was used to allow controlled routing between VLANs.
@@ -196,6 +214,7 @@ The post-ACL test showed that the guest network was successfully blocked from in
 |---|---|
 | `01_Packet_Tracer_Topology.png` | Final Packet Tracer topology with SteenCorp VLAN design note |
 | `02_VLAN_Configuration.png` | VLANs created on the access switch and assigned to device ports |
+| `02A_Trunk_Link_Configuration.png` | Trunk link configuration showing VLANs allowed across the router/switch link |
 | `03_Router_Subinterfaces.png` | Router-on-a-stick subinterfaces configured as VLAN gateways |
 | `04_Corporate_PC_IP_Config.png` | Corporate workstation IP configuration |
 | `05_Guest_PC_IP_Config.png` | Guest workstation IP configuration |
@@ -204,6 +223,16 @@ The post-ACL test showed that the guest network was successfully blocked from in
 | `07_Guest_To_Internal_Server_Blocked.png` | Guest workstation blocked from reaching the internal server after ACL |
 | `08_Guest_To_Internet_Test_Server_Allowed.png` | Guest workstation still allowed to reach the simulated internet/test server |
 | `09_ACL_Configuration.png` | Guest isolation ACL configuration on the router |
+
+---
+
+## Packet Tracer File
+
+The completed Cisco Packet Tracer lab file is included here:
+
+```text
+PacketTracer/SteenCorp_Network_Segmentation_Lab.pkz
+```
 
 ---
 
@@ -216,11 +245,12 @@ SteenCorp-Network-Segmentation-Lab/
 ├── SteenCorp_Network_Segmentation_Banner.jpg
 │
 ├── PacketTracer/
-│   └── SteenCorp_Network_Segmentation_Lab.pkt
+│   └── SteenCorp_Network_Segmentation_Lab.pkz
 │
 └── Evidence/
     ├── 01_Packet_Tracer_Topology.png
     ├── 02_VLAN_Configuration.png
+    ├── 02A_Trunk_Link_Configuration.png
     ├── 03_Router_Subinterfaces.png
     ├── 04_Corporate_PC_IP_Config.png
     ├── 05_Guest_PC_IP_Config.png
@@ -237,6 +267,7 @@ SteenCorp-Network-Segmentation-Lab/
 
 - Cisco Packet Tracer network design
 - VLAN segmentation
+- Trunk link configuration
 - Inter-VLAN routing
 - Router-on-a-stick configuration
 - 802.1Q VLAN tagging
@@ -256,6 +287,7 @@ SteenCorp-Network-Segmentation-Lab/
 - Flat networks are easier to build but harder to secure
 - VLANs help separate devices by role, department, or trust level
 - Guest networks should not have access to internal company resources
+- Trunk links allow multiple VLANs to travel between network devices
 - Router-on-a-stick allows one router interface to route between multiple VLANs
 - ACLs can be used to enforce basic traffic restrictions
 - Routing should be tested before applying access control rules
